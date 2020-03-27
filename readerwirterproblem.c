@@ -1,23 +1,27 @@
 #include<stdio.h>
-#include<condition_variable.h>
-#include<thread.h>
-#include<random.h>
-#include<mutex.h>
-int main() {
-  int readers = 5;
-  int writers = 5;
-  printf(thread::hardware_concurrency());
-  
-  thread threads[readers];
-  
-  for(int i = 0; i < readers; i++) {
-    threads[thread{read}];
-  }
-  for(int i = 0; i < writers; i++) {
-    threads[thread{write}];
-  }
-  for(int i = 0; i < readers + writers; i++) {
-    threads[i].join();
-  }
-  return 0;
+#include<unistd.h>
+#include<stdlib.h>
+#include<pthread.h>
+pthread_mutex_t w;
+void* writer(void *arg) {
+  int waiting_time = rand() % 10;
+  int k = ((int) arg);
+  pthread_mutex_lock(&w);
+  printf("W%d Random time wait = %d\n", k, waiting_time);
+  sleep(waiting_time);
+  printf("Enter the No of time W%d wants to write\n", k);
+  int t;scanf("%d", & t);
+  printf("writing W%d is under process\n", k);
+  int i;
+  for (i=0;i<t;i++) {
+    printf("Enter %dth Value to be written:\n", (i + 1));
+    int u;scanf("%d",&u);
+	k+=u;
+	}
+  printf("Shared Value Updated to = %d \n", k);
+  printf("--------------------------------------------------\n");
+  pthread_mutex_unlock(&w);
 }
+
+
+
