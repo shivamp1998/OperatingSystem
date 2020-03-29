@@ -51,9 +51,9 @@ void *reader(void *a){
 		cnt--;
 		if(cnt == 0){
 			pthread_mutex_unlock(&w);//If this is the last reader, it will wake up the writer.
-			pthread_mutex_unlock(&mux);	
+			
 		}
-		
+		pthread_mutex_unlock(&mux);	
 		
 	}
 	
