@@ -20,7 +20,7 @@ void *writer(void* a){
 	shared_variable = shared_variable + 1;
 	if(cnt==1)
 	cnt=0;
-	printf("Writer %d modified Shared Variable to %d with %d readers present\n",r+1,shared_variable,cnt);
+	printf("Writer %d:modified Shared Variable to %d with %d readers present\n",r+1,shared_variable,cnt);
     
 	pthread_mutex_unlock(&w);
 }
@@ -69,13 +69,16 @@ int main(){
 	pthread_mutex_init(&mux,NULL);
 	//thread Creation
 	for(int i=0;i<5;i++){
-		pthread_create(&readers[i],NULL,&reader,(int *)i);
 		pthread_create(&writers[i],NULL,&writer,(int *)i);
+		pthread_create(&readers[i],NULL,&reader,(int *)i);
+		
 	}
 	//Joining Thread
 	for(int i=0;i<5;i++){
-		pthread_join(writers[i],NULL);
-		pthread_join(readers[i],NULL);
+			pthread_join(readers[i],NULL);
+			pthread_join(writers[i],NULL);
 	}
+	pthread_mutex_destroy(&mux);
+	pthread_mutex_destroy(&w);
 	return 0;
 }
