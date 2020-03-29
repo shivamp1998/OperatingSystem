@@ -5,7 +5,7 @@
 int shared_variable = 0;
 pthread_mutex_t mux,w;//locks
 int cnt = 0;//no of readers
-const int X = 5;//The value of X can be modified from here
+int X;//The value of X can be modified from here
 void *writer(void* a){
 	int rT = rand()%10; // generates a random no b/w 0 to 10;
 	int r = ((int)a);//stores the no of writer
@@ -64,6 +64,8 @@ void *reader(void *a){
 int main(){
 	int NumOfReaders = 5;
 	int NumOfWriters = 5;
+	printf("Enter the No of Read Write operations to be performed:");
+	scanf("%d",&X);
 	pthread_t readers[NumOfReaders],writers[NumOfWriters];
 	pthread_mutex_init(&w,NULL);
 	pthread_mutex_init(&mux,NULL);
